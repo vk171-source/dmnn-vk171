@@ -1055,13 +1055,24 @@ We use the same scaled data for consistency.
 #### R: Hierarchical Clustering
 
 ```{r}
-dist_matrix <- dist(cluster_scaled)
+set.seed(42)
+
+# Hierarchical clustering does not scale well
+# We use a random subset for demonstration
+sample_idx <- sample(1:nrow(cluster_scaled), 500)
+cluster_sample <- cluster_scaled[sample_idx, ]
+
+dist_matrix <- dist(cluster_sample)
 
 hc_model <- hclust(dist_matrix, method = "ward.D2")
 
 plot(hc_model, labels = FALSE,
-     main = "Hierarchical Clustering Dendrogram")
+     main = "Hierarchical Clustering Dendrogram (Sampled Data)")
+
+
 ```
+
+
 
 ::: {.callout-note collapse="true"}
 
@@ -1083,15 +1094,24 @@ Why this matters:
 #### Python: Hierarchical Clustering
 
 ```{python}
+import numpy as np
 from scipy.cluster.hierarchy import linkage, dendrogram
 import matplotlib.pyplot as plt
 
-linked = linkage(cluster_scaled, method='ward')
+np.random.seed(42)
+
+# Hierarchical clustering does not scale well
+# Use random subset
+sample_idx = np.random.choice(cluster_scaled.shape[0], 500, replace=False)
+cluster_sample = cluster_scaled[sample_idx]
+
+linked = linkage(cluster_sample, method='ward')
 
 plt.figure(figsize=(8,5))
 dendrogram(linked, no_labels=True)
-plt.title("Hierarchical Clustering Dendrogram")
+plt.title("Hierarchical Clustering Dendrogram (Sampled Data)")
 plt.show()
+
 ```
 
 ::: {.callout-note collapse="true"}
